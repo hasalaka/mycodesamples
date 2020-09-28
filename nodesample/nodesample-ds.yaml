@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: samplenodeapp-deployment
+  labels:
+    app: samplenode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: samplenode
+  template:
+    metadata:
+      labels:
+        app: samplenode
+    spec:
+      containers:
+      - name: nodeapp
+        image: gcr.io/gcp-wow-rwds-hwaravita-poc-dev/nodesample:v2
+        ports:
+            - containerPort: 3000
+---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: node-sample-service
+      labels:
+        app: samplenode
+        role: master
+        tier: backend
+    spec:
+      ports:
+      - port: 6000
+        targetPort: 3000
+      selector:
+        app: samplenode
+        role: master
+        tier: backend

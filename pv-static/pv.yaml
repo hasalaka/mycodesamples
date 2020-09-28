@@ -1,0 +1,14 @@
+# pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: pv-gce
+spec:
+    capacity:
+        storage: 15Gi
+    accessModes:
+        - ReadWriteOnce
+    storageClassName: slow
+    gcePersistentDisk:
+        pdName: pd1 #pd1 must be created manually (disks)
+        fsType: ext4

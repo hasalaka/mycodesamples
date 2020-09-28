@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: samplenodeproxy-deployment
+  labels:
+    app: samplenodeproxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: samplenodeproxy
+  template:
+    metadata:
+      labels:
+        app: samplenodeproxy
+    spec:
+      containers:
+      - name: nodeapp
+        image: gcr.io/gcp-wow-rwds-hwaravita-poc-dev/nodesample:v4
+        ports:
+            - containerPort: 3000
+        env:
+        - name: GET_HOSTS_FROM
+          value: dns
+---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: node-sample-service
+      labels:
+        app: samplenodeproxy
+    spec:
+      type: NodePort
+      ports:
+      - port: 6001
+        targetPort: 3000
+      selector:
+        app: samplenodeproxy
